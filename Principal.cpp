@@ -35,28 +35,28 @@ int main(){
 		
 			distribuir_tropas();
 			system ("cls");
-			burro='1';
+			user='1';
 			
-			while(burro == '1'){
+			while(user == '1'){
 			system("cls");
 			cout<<"\n\n\n\n\t\tDigite 1, para mover tropas ou digite 2 para atacar ou 3 para passar a vez.\n";
-			cin>>burro;
+			cin>>user;
 			system("cls");
-			if(burro == '1')
-			burro = mover_tropas();
+			if(user == '1')
+			user = mover_tropas();
 			
 			}
 			
 			
 			system("cls");
 			Printar_mapa();
-			if(burro == '2'){
+			if(user == '2'){
 				cout<<"\n\n\n\n\t\tSelecione o pais atacante: "; 
-				cin>>burro;
-				atacante = paisesT[(int)(burro - 'A')];
+				cin>>user;
+				atacante = paisesT[(int)(user - 'A')];
 				cout<<"\n\n\t\tSelecione quem vai receber porrada: ";
-				cin>>burro;
-				defensor = paisesT[(int)(burro - 'A')];
+				cin>>user;
+				defensor = paisesT[(int)(user - 'A')];
 				//porradaria();
 			}
 			

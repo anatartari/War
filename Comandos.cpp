@@ -79,8 +79,8 @@ char mover_tropas(){
 			system("cls");
 			Printar_mapa();
 			cout<<"\n\nDigite o pais de origem: ";
-			cin>>burro;
-			pais_origem = &paisesT[(int)(burro - 'A')];
+			cin>>user;
+			pais_origem = &paisesT[(int)(user - 'A')];
 		if((*pais_origem).player != dono_da_vez){
 			cout<<"Esse pais nao te pertence!\n";
 			system("pause");
@@ -92,8 +92,8 @@ char mover_tropas(){
 		system("cls");
 		Printar_mapa();
 		cout<<"Digite o pais destino: ";
-		cin>>burro;
-		pais_destino = &paisesT[(int)(burro - 'A')];
+		cin>>user;
+		pais_destino = &paisesT[(int)(user - 'A')];
 	if((*pais_destino).player != dono_da_vez){
 		cout<<"Esse pais nao te pertence!\n";
 		system("pause");
@@ -146,17 +146,17 @@ void distribuir_tropas(){
 		do{
 			Printar_mapa();
 			cout<<"Digite a que pais quer adicionar tropas\n";
-			cin>>burro;
-			if(paisesT[burro-'A'].player != dono_da_vez){
+			cin>>user;
+			if(paisesT[user-'A'].player != dono_da_vez){
 				cout<<"Este pais nao te pertence\n";
 				system("pause");
 			}
-		}while(paisesT[burro - 'A'].player != dono_da_vez);
+		}while(paisesT[user - 'A'].player != dono_da_vez);
 		
 		/* Receber quantas tropas serão adicionadas */
 		do{
 		Printar_mapa();
-		cout<<"Digite quantas tropas quer adicionar ao pais "<< burro <<endl;
+		cout<<"Digite quantas tropas quer adicionar ao pais "<< user <<endl;
 		cin>>nadd;
 		if(nadd > total){
 			cout<<"Digite um numero menor ou igual a "<<total<<endl;
@@ -165,7 +165,7 @@ void distribuir_tropas(){
 		}while(nadd > total);
 		
 		/* Realizando efetivamente a adição de tropas */
-		paisesT[burro - 'A'].nexercitos += nadd;
+		paisesT[user - 'A'].nexercitos += nadd;
 		total -= nadd;
 	}
 		

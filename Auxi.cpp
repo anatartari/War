@@ -27,7 +27,7 @@ class Territorio{
 Territorio paisesT[26]; /* declarando os paises */
 jogador player1, player2;
 jogador* dono_da_vez;
-char burro;
+char user;
 bool fim = false;
 int dado_atk[3];
 int dado_def[3];
