@@ -157,9 +157,14 @@ void distribuir_tropas(){
 		do{
 		Printar_mapa();
 		cout<<"Digite quantas tropas quer adicionar ao pais "<< user <<endl;
+		cout<<"Lembre-se voce possui "<<total<< " tropas!"<<endl;
 		cin>>nadd;
-		if(nadd > total){
+		if(nadd > total && total > 1){
 			cout<<"Digite um numero menor ou igual a "<<total<<endl;
+			system("pause");
+		}
+		if(nadd > total && total == 1){
+			cout<<"Voce possui apenas uma tropa" <<endl;
 			system("pause");
 		}
 		}while(nadd > total);
