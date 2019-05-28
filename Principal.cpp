@@ -22,22 +22,23 @@ int main(){
 	srand((unsigned)time(0));
 		Menu();
 		distribuir_paises();
-		Printar_mapa();
+		dono_da_vez = &player1;
+		distribuir_tropas();
+		dono_da_vez = &player2;
+		distribuir_tropas();
+		
+		while( !fim ){
 		if(turno % 2 ) dono_da_vez = &player1;
 		else dono_da_vez = &player2;
-		mover_tropas();
-		Printar_mapa();
 		
-	/*	while( !fim ){
-		if(turno % 2 ) dono_da_vez = &player1;
-		else dono_da_vez = &player2;
-		
+		textcolor((*dono_da_vez).cor, 0);
 		
 			distribuir_tropas();
 			system ("cls");
 			burro='1';
 			
 			while(burro == '1'){
+			system("cls");
 			cout<<"\n\n\n\n\t\tDigite 1, para mover tropas ou digite 2 para atacar ou 3 para passar a vez.\n";
 			cin>>burro;
 			system("cls");
@@ -56,11 +57,11 @@ int main(){
 				cout<<"\n\n\t\tSelecione quem vai receber porrada: ";
 				cin>>burro;
 				defensor = paisesT[(int)(burro - 'A')];
-				porradaria();
+				//porradaria();
 			}
 			
 		turno++;	
-		}*/
+		}
 		
 	return 0;
 }
@@ -68,7 +69,7 @@ int main(){
 
 void Menu(){
 	cout<<"\n\n\n\n"<<endl;
-	cout<< "\t\t Bem-vindxs, ao WAR das Damas de Maria."<<endl;
+	cout<<"\t\t Bem-vindxs, ao WAR das Damas de Maria."<<endl;
 	cout<<"\n\n\n\n"<<endl;
 	cout<<"\t\t[Digite qualquer tecla para continuar]"<<endl;
 	cout<<"\n\n\n\n"<<endl;

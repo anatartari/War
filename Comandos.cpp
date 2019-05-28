@@ -11,7 +11,7 @@ Territorio atacante, defensor;
 
 void distribuir_paises(int numero_jogadores);
 
-
+void distribuir_tropas();
 
 char num_exercito (Territorio add);
 
@@ -65,16 +65,10 @@ void Printar_mapa(){
 	}
 	cout<<"\n";
 	}
-	textcolor(15, 0);
+	textcolor((*dono_da_vez).cor, 0);
 }
 
-char distribuir_tropas(){
-	
-	
-	
-	
-	return '1';
-}
+
 
 char mover_tropas(){
 	int num=0;
@@ -140,6 +134,43 @@ char num_exercito (Territorio add){
 	
 	return '1';
 }
+
+
+void distribuir_tropas(){
+	int total = (*dono_da_vez).Ndominios/2;
+	if(total == 0)total++;
+	
+	while(total > 0){
+		int nadd;
+		/* Receber o pais que vai receber as tropas */
+		do{
+			Printar_mapa();
+			cout<<"Digite a que pais quer adicionar tropas\n";
+			cin>>burro;
+			if(paisesT[burro-'A'].player != dono_da_vez){
+				cout<<"Este pais nao te pertence\n";
+				system("pause");
+			}
+		}while(paisesT[burro - 'A'].player != dono_da_vez);
+		
+		/* Receber quantas tropas serão adicionadas */
+		do{
+		Printar_mapa();
+		cout<<"Digite quantas tropas quer adicionar ao pais "<< burro <<endl;
+		cin>>nadd;
+		if(nadd > total){
+			cout<<"Digite um numero menor ou igual a "<<total<<endl;
+			system("pause");
+		}
+		}while(nadd > total);
+		
+		/* Realizando efetivamente a adição de tropas */
+		paisesT[burro - 'A'].nexercitos += nadd;
+		total -= nadd;
+	}
+		
+}
+
 
 
 
