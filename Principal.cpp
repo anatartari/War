@@ -58,7 +58,6 @@ int main(){
 				defensor = paisesT[(int)(burro - 'A')];
 				porradaria();
 			}
-
 			
 		turno++;	
 		}*/

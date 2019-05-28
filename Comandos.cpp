@@ -4,7 +4,6 @@
 #include <time.h>
 #include <windows.h>
 #include "Mapa.cpp"
-#include "Auxi.cpp"
 
 using namespace std;
 
@@ -106,15 +105,16 @@ char mover_tropas(){
 		system("pause");
 	}
 	}while((*pais_destino).player != dono_da_vez);
-	bool front = faz_fronteira(*pais_origem, *pais_destino);
-	if(front){
+	bool front = faz_fronteira(pais_origem, pais_destino);
+	if(!front){
 		cout<<"Estes paises nao possuem fronteiras entre si!\n";
 		system("pause");
 		return '1';
 	}
 	if((*pais_origem).nexercitos == 1 ){
-		cout<<"Voce nao pode mover paises que possuem apenas 1 tropa "<< (char)((pais_origem-&paisesT[0]) + 'A')<<endl;
+		cout<<"Voce nao pode mover paises que possuem apenas 1 tropa\n";
 		system("pause");
+		return '1';
 	}
 	
 	cout<<"Digite o numero de tropas a serem movidas: ";
@@ -140,7 +140,6 @@ char num_exercito (Territorio add){
 	
 	return '1';
 }
-
 
 
 

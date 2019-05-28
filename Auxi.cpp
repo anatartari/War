@@ -5,6 +5,28 @@
 
 using namespace std;
 
+class Territorio;
+
+class jogador{
+public:
+	int dominio[27];
+	int id;
+	char nome[20];
+	int Ndominios;
+	int cor;
+};
+
+class Territorio{
+    public:
+    jogador* player;
+    int x, y;
+    Territorio* fronteira[4];
+    int nexercitos;
+};
+
+Territorio paisesT[26]; /* declarando os paises */
+jogador player1, player2;
+jogador* dono_da_vez;
 char burro;
 bool fim = false;
 int dado_atk[3];
@@ -15,22 +37,6 @@ int random(int menor, int maior);
 void roll_atk(int n);
 
 int turno=1;
-
-/*int main(){
-	srand((unsigned)time(0));
-	for(int i=0; i<3; i++){
-		dado_atk[i] = random(1, 6);
-		dado_def[i] = random(1, 6);
-		cout<<dado_atk[i] <<"  |  "<< dado_def[i] <<endl;
-	}
-	cout<<"\n\n\n\n";
-	ordenar_dados();
-	for(int i=0; i<3; i++){
-		cout<<dado_atk[i] <<"  |  "<< dado_def[i] <<endl;
-	}
-	
-	return 0;
-}*/
 
 void ordenar_dados(){
 	int aux[3]={0,0,0}, p[3]={0,0,0};
