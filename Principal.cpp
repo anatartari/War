@@ -32,37 +32,36 @@ int main(){
 		else dono_da_vez = &player2;
 		
 		textcolor((*dono_da_vez).cor, 0);
-		
-			distribuir_tropas();
+			if(turno > 2) distribuir_tropas();
+			
 			system ("cls");
 			user='1';
 			
 			while(user == '1'){
-			system("cls");
-			cout<<"\n\n\n\n\t\tDigite 1, para mover tropas ou digite 2 para atacar ou 3 para passar a vez.\n";
+			Printar_mapa();
+			cout<<"\t\tDigite 1, para mover tropas ou digite 2 para atacar ou 3 para passar a vez.\n";
 			cin>>user;
 			system("cls");
 			if(user == '1')
 			user = mover_tropas();
 			
 			}
-			
+			while(user == '2')
+				ataque();
 			
 			system("cls");
 			Printar_mapa();
-			if(user == '2'){
-				cout<<"\n\n\n\n\t\tSelecione o pais atacante: "; 
-				cin>>user;
-				atacante = paisesT[(int)(user - 'A')];
-				cout<<"\n\n\t\tSelecione quem vai receber porrada: ";
-				cin>>user;
-				defensor = paisesT[(int)(user - 'A')];
-				//porradaria();
-			}
-			
+			if(user == '2') ataque();
+		
+			if(player1.Ndominios == 0)fim = true;
+			if(player2.Ndominios == 0)fim = true;
+			if(fim){
+				system("cls");
+				cout<<"\n\n\n\n\n\t\t\t\tParabens "<<(*dono_da_vez).nome<<" voce venceu!!!\n";
+				cout<<"\t\t\t\tVoce esta muito feliz";
+			}	
 		turno++;	
 		}
-		
 	return 0;
 }
 

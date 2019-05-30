@@ -28,6 +28,7 @@ Territorio paisesT[26]; /* declarando os paises */
 jogador player1, player2;
 jogador* dono_da_vez;
 char user;
+int user_int;
 bool fim = false;
 int dado_atk[3];
 int dado_def[3];
@@ -88,3 +89,28 @@ void ordenar_dados(){
 int random(int menor, int maior){
 	return rand()%(maior-menor+1)+menor;
 }
+
+
+void rolar_dados(int num_atk, int num_def){
+	if(num_def > 3)num_def = 3;
+	
+	for(int i=0; i<3; i++){
+		dado_atk[i] = 0;
+		dado_def[i] = 0;
+	}
+	for(int i=0; i<num_atk; i++){
+		dado_atk[i] = random(1, 6);
+	}
+	for(int i=0; i<num_def; i++){
+		dado_def[i] = random(1, 6);
+	}
+	
+}
+
+
+
+
+
+
+
+
