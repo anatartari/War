@@ -104,12 +104,12 @@ char mover_tropas(){
 	if(!front){
 		cout<<"Estes paises nao possuem fronteiras entre si!\n";
 		system("pause");
-		return '1';
+		return '2';
 	}
 	if((*pais_origem).nexercitos == 1 ){
 		cout<<"Voce nao pode mover paises que possuem apenas 1 tropa\n";
 		system("pause");
-		return '1';
+		return '2';
 	}
 	
 	do{
@@ -124,7 +124,7 @@ char mover_tropas(){
 	(*pais_origem).nexercitos -= num;
 	(*pais_destino).nexercitos += num;
 	
-	return '1';
+	return '2';
 }
 
 
@@ -211,7 +211,7 @@ bool ataque(){
 		system("pause");
 	}
 	}while( (*defensor).player == dono_da_vez );
-	
+	/* Fronteira */
 	if(!faz_fronteira(atacante, defensor)){
 		cout<<"Os paises nao fazem fronteira"<<endl;
 		system("pause");
@@ -228,9 +228,9 @@ bool ataque(){
 		system("pause");
 	}
 	}while(user_int > 3 || user_int >= (*atacante).nexercitos);
-	
+	/* rolagem de dados */
 	rolar_dados(user_int, (*defensor).nexercitos);
-	ordenar_dados();
+	ordenar_dados();  
 	system("cls");
 	cout<<"\t\t\t\tComparando os dados:\n\n\n";
 	for(int i=0; i < 3; i++){
@@ -245,7 +245,7 @@ bool ataque(){
 		if(dado_def[i] > 0)
 		cout<< dado_def[i];
 		else cout<<' ';
-		if(dado_atk[i] != 0 && dado_def != 0){
+		if(dado_atk[i] != 0 && dado_def[i] != 0){
 		if(dado_atk[i] > dado_def[i])vitorias++;
 		else derrotas++;
 		}
@@ -258,8 +258,26 @@ bool ataque(){
 	system("pause");
 	
 	if((*defensor).nexercitos <= 0){
-		(*atacante).nexercitos--;
-		(*defensor).nexercitos = 1;
+		system("cls");
+		cout<<"\n\n\n\n\t\t\t\tPais conquistado. Voce esta feliz!";
+		do{
+		Printar_mapa();
+		cout<<"Digite com quantas tropas quer invadir\n";
+		if((*atacante).nexercitos < 4)
+		cout<<"Lembre que deve ser no maximo "<< (*atacante).nexercitos - 1<<endl;
+		else cout<<"Lembre que deve ser no maximo 3"<<endl;
+		cin>>user_int;
+		if( user_int > 3 && user_int < 1 ){
+			system("cls");
+			cout<<"\n\n\n\n\t\t\t\tValor invalido\n";
+			system("pause");
+		}
+		}while(user_int > 3 && user_int < 1);
+		
+		(*atacante).nexercitos -= user_int;
+		(*defensor).nexercitos += user_int;
+		
+		
 		(*(*defensor).player).Ndominios--;
 		(*dono_da_vez).Ndominios++;
 		(*defensor).player = dono_da_vez;

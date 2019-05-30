@@ -8,7 +8,7 @@
 
 using namespace std;
 
-
+/* falta obrigar o usuario a atacar com o maximo q pode */
 void Menu();
 
 int main(){
@@ -49,34 +49,42 @@ int main(){
 			distribuir_tropas();
 			
 			system ("cls");
-			while(user != '3'){
-			user='1';
 			
-			while(user == '1'){
-			Printar_mapa();
-			cout<<"\t\tDigite 1, para mover tropas ou digite 2 para atacar ou 3 para passar a vez.\n";
-			cin>>user;
-			system("cls");
-			if(user == '1')
-			user = mover_tropas();
+			user = '2';
 			
-			}
-			while(user == '2'){
-				ataque();
-				cout<<"Para continuar atacando, digite 2\n"<<"Digite qualquer outra tecla para passar a vez\n"; 
+			do{ /* ataque */
+				Printar_mapa();
+				cout<<"Para atacar, digite 1\n"<<"Digite qualquer outra tecla para terminar os ataques\n"; 
 	   	   	   	cin>>user;
-		}
-
-		
-			if((*dono_da_vez).Ndominios == 0) fim = true;
+	   	   	   	if(user == '1')
+				ataque();
+			
+			/* condição de vitória */
+			if((*dono_da_vez).Ndominios == 26) fim = true;
 			if(fim){
 				system("cls");
-				cout<<"\n\n\n\n\n\t\t\t\tParabens "<<(*dono_da_vez).nome<<" voce venceu!!!\n";
-				cout<<"\t\t\t\tVoce esta muito feliz";
+				cout<<"\n\n\n\n\n\t\t\t\tParabens "<<(*dono_da_vez).nome <<" voce venceu!!!\n";
+				cout<<"\t\t\t\tVoce esta muito feliz" << endl;
+				break;
 			}	
-		}
+		}while(user == '1');
+		
+			do{ /* mover */
+			Printar_mapa();
+			cout<<"Para mover tropas  digite 2\n"<<"Digite qualquer outra tecla para passar a vez\n";
+			cin>>user;
+			system("cls");
+			if(user == '2')
+			user = mover_tropas();
+			
+			}while(user == '2');
+
 		turno++;	
 		}
+		if(turno % 2 ) dono_da_vez = &player1;
+		else dono_da_vez = &player2;
+		cout<<"\n\t\t\t\t"<<(*dono_da_vez).nome <<", a sua incompetencia me supreende, parabens!"<<endl;
+		cout<<"\t\t\t\tVoce esta muito triste";
 	return 0;
 }
 
