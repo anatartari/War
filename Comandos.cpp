@@ -182,7 +182,7 @@ void distribuir_tropas(){
 		
 }
 
-void ataque(){
+bool ataque(){
 	int vitorias = 0, derrotas = 0;
 	textcolor((*dono_da_vez).cor, 0);
 	do{
@@ -195,25 +195,36 @@ void ataque(){
 		system("pause");
 	}
 	}while( (*atacante).player != dono_da_vez );
-	
+	if((*atacante).nexercitos == 1){
+		cout<<"Paises com apenas 1 tropa nao podem atacar"<<endl;
+		system("pause");
+		return false;
+	}
 	
 	do{
 	Printar_mapa();
 	cout<<"Escolha um pais inimigo para atacar\n";
 	cin>>user;
 	defensor = &paisesT[user-'A'];
-	if( (*atacante).player != dono_da_vez ){
+	if( (*defensor).player == dono_da_vez ){
 		cout<<"Este pais te pertence\n";
 		system("pause");
 	}
-	}while( (*atacante).player != dono_da_vez );
+	}while( (*defensor).player == dono_da_vez );
+	
+	if(!faz_fronteira(atacante, defensor)){
+		cout<<"Os paises nao fazem fronteira"<<endl;
+		system("pause");
+		return false;
+	}
 	
 	do{
 		Printar_mapa();
 		cout<<"Digite quantas tropas deseja usar no ataque\n";
 		cin>>user_int;
 		if(user_int > 3 || user_int >= (*atacante).nexercitos){
-		cout<<"O numero deve ser menor ou igual a 3 e menor que "<<(*atacante).nexercitos<<endl;
+			if((*atacante).nexercitos >3) cout<<"O numero deve ser menor ou igual a 3"<<endl;
+		   	else cout<<"O numero deve ser menor que " << (*atacante).nexercitos<<endl;
 		system("pause");
 	}
 	}while(user_int > 3 || user_int >= (*atacante).nexercitos);
@@ -256,8 +267,7 @@ void ataque(){
 	
 	Printar_mapa();
 	
-	cout<<"Para continuar atacando, digite 2\n"<<"Digite qualquer outra tecla para passar a vez\n"; 
-	cin>>user;
+	return true;
 }
 
 

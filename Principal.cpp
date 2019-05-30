@@ -20,21 +20,36 @@ int main(){
 		player2.dominio[i] = -1;
 }
 	srand((unsigned)time(0));
-		Menu();
+	Menu();
 		distribuir_paises();
+		int r = random(0, 1);
+		if(r == 1){
 		dono_da_vez = &player1;
 		distribuir_tropas();
 		dono_da_vez = &player2;
 		distribuir_tropas();
+		}
+		else{
+		dono_da_vez = &player2;
+		distribuir_tropas();
+		dono_da_vez = &player1;
+		distribuir_tropas();
+		}
 		
 		while( !fim ){
 		if(turno % 2 ) dono_da_vez = &player1;
 		else dono_da_vez = &player2;
 		
+		if(r == 0){
+		if(turno % 2 ) dono_da_vez = &player2;
+		else dono_da_vez = &player1;
+		}
+		
 		textcolor((*dono_da_vez).cor, 0);
-			if(turno > 2) distribuir_tropas();
+			distribuir_tropas();
 			
 			system ("cls");
+			while(user != '3'){
 			user='1';
 			
 			while(user == '1'){
@@ -46,20 +61,20 @@ int main(){
 			user = mover_tropas();
 			
 			}
-			while(user == '2')
+			while(user == '2'){
 				ataque();
-			
-			system("cls");
-			Printar_mapa();
-			if(user == '2') ataque();
+				cout<<"Para continuar atacando, digite 2\n"<<"Digite qualquer outra tecla para passar a vez\n"; 
+	   	   	   	cin>>user;
+		}
+
 		
-			if(player1.Ndominios == 0)fim = true;
-			if(player2.Ndominios == 0)fim = true;
+			if((*dono_da_vez).Ndominios == 0) fim = true;
 			if(fim){
 				system("cls");
 				cout<<"\n\n\n\n\n\t\t\t\tParabens "<<(*dono_da_vez).nome<<" voce venceu!!!\n";
 				cout<<"\t\t\t\tVoce esta muito feliz";
 			}	
+		}
 		turno++;	
 		}
 	return 0;
@@ -96,6 +111,8 @@ void Menu(){
 	system("pause");
 	system("cls");
 	
+cout<<"\n\n\n\n"<<endl;
+cout<<"\tOBS: Voce ser o player 1 nao significa que ira iniciar o jogo!"<<endl;
 	textcolor(player1.cor, 0);
 	cout<<"\n\n\n\n"<<endl;
 	cout<< "\t\t Digite o apelido do Player 1: ";
