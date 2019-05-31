@@ -71,16 +71,17 @@ void Printar_mapa(){
 
 
 
-char mover_tropas(){
+bool mover_tropas(){
 	int num=0;
 	Territorio* pais_origem;
 	Territorio* pais_destino;
-	
+	/* pais de origem */
 	do{
 			system("cls");
 			Printar_mapa();
-			cout<<"\n\nDigite o pais de origem: ";
+			cout<<"\n\nDigite a partir de qual pais quer mover tropas ou digite . para concluir sua vez\n";
 			cin>>user;
+			if(user == '.') return false; /* condição para encerrar o movimento */
 			pais_origem = &paisesT[(int)(user - 'A')];
 		if((*pais_origem).player != dono_da_vez){
 			cout<<"Esse pais nao te pertence!\n";
@@ -88,12 +89,13 @@ char mover_tropas(){
 		}
 	
 	}while((*pais_origem).player != dono_da_vez);
-	
-	do{	
+	/* pais destino */
+	do{
 		system("cls");
 		Printar_mapa();
-		cout<<"Digite o pais destino: ";
+		cout<<"Digite o pais destino ou digite . para concluir sua vez\n";
 		cin>>user;
+		if(user == '.') return false; /* condição para encerrar o movimento */
 		pais_destino = &paisesT[(int)(user - 'A')];
 	if((*pais_destino).player != dono_da_vez){
 		cout<<"Esse pais nao te pertence!\n";
@@ -104,27 +106,29 @@ char mover_tropas(){
 	if(!front){
 		cout<<"Estes paises nao possuem fronteiras entre si!\n";
 		system("pause");
-		return '2';
+		return true;
 	}
 	if((*pais_origem).nexercitos == 1 ){
 		cout<<"Voce nao pode mover paises que possuem apenas 1 tropa\n";
 		system("pause");
-		return '2';
+		return true;
 	}
 	
 	do{
-	cout<<"Digite o numero de tropas a serem movidas: ";
+	Printar_mapa();
+	cout<<"Digite o numero de tropas a serem movidas de "<< (char)((*pais_origem).id + 'A')<<" para "<< (char)((*pais_destino).id + 'A')<<"\n";
 	cin>>num;
-	if(num > (*pais_origem).nexercitos ){
-		cout<<"Ao menos 1 tropa deve permanecer no territorio de origem\n";
+	if(num >= (*pais_origem).nexercitos ){
+		system("cls");
+		cout<<"\n\n\n\n\t\t\t\tAo menos 1 tropa deve permanecer no territorio de origem\n\n";
 		system("pause");
 	}
-	}while( num > (*pais_origem).nexercitos );
+	}while( num >= (*pais_origem).nexercitos );
 	
 	(*pais_origem).nexercitos -= num;
 	(*pais_destino).nexercitos += num;
 	
-	return '2';
+	return true;
 }
 
 
@@ -187,8 +191,9 @@ bool ataque(){
 	textcolor((*dono_da_vez).cor, 0);
 	do{
 	Printar_mapa();
-	cout<<"Escolha o pais atacante\n";
+	cout<<"Escolha o pais atacante ou digite . para encerrar os ataques\n";
 	cin>>user;
+	if(user == '.') return false;
 	atacante = &paisesT[user-'A'];
 	if((*atacante).player != dono_da_vez ){
 		cout<<"Este pais nao te pertence\n";
@@ -218,18 +223,8 @@ bool ataque(){
 		return false;
 	}
 	
-	do{
-		Printar_mapa();
-		cout<<"Digite quantas tropas deseja usar no ataque\n";
-		cin>>user_int;
-		if(user_int > 3 || user_int >= (*atacante).nexercitos){
-			if((*atacante).nexercitos >3) cout<<"O numero deve ser menor ou igual a 3"<<endl;
-		   	else cout<<"O numero deve ser menor que " << (*atacante).nexercitos<<endl;
-		system("pause");
-	}
-	}while(user_int > 3 || user_int >= (*atacante).nexercitos);
 	/* rolagem de dados */
-	rolar_dados(user_int, (*defensor).nexercitos);
+	rolar_dados((*atacante).nexercitos - 1, (*defensor).nexercitos);
 	ordenar_dados();  
 	system("cls");
 	cout<<"\t\t\t\tComparando os dados:\n\n\n";
@@ -267,12 +262,12 @@ bool ataque(){
 		cout<<"Lembre que deve ser no maximo "<< (*atacante).nexercitos - 1<<endl;
 		else cout<<"Lembre que deve ser no maximo 3"<<endl;
 		cin>>user_int;
-		if( user_int > 3 && user_int < 1 ){
+		if( user_int > 3 || user_int < 1 ){
 			system("cls");
 			cout<<"\n\n\n\n\t\t\t\tValor invalido\n";
 			system("pause");
 		}
-		}while(user_int > 3 && user_int < 1);
+		}while(user_int > 3 || user_int < 1);
 		
 		(*atacante).nexercitos -= user_int;
 		(*defensor).nexercitos += user_int;

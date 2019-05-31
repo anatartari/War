@@ -1,4 +1,4 @@
-/*               Principal                       */
+/*									PRINCIPAL 	   		                      */
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>
@@ -21,49 +21,63 @@ int main(){
 		player2.dominio[i] = -1;
 }
 	srand((unsigned)time(0));
-		Menu();
+	Menu();
 		distribuir_paises();
+		int r = random(0, 1);
+		if(r == 1){
 		dono_da_vez = &player1;
 		distribuir_tropas();
 		dono_da_vez = &player2;
 		distribuir_tropas();
+		}
+		else{
+		dono_da_vez = &player2;
+		distribuir_tropas();
+		dono_da_vez = &player1;
+		distribuir_tropas();
+		}
 		
 		while( !fim ){
 		if(turno % 2 ) dono_da_vez = &player1;
 		else dono_da_vez = &player2;
 		
-		textcolor((*dono_da_vez).cor, 0);
-		
-			distribuir_tropas();
-			system ("cls");
-			burro='1';
-			
-			while(burro == '1'){
-			system("cls");
-			cout<<"\n\n\n\n\t\tDigite 1, para mover tropas ou digite 2 para atacar ou 3 para passar a vez.\n";
-			cin>>burro;
-			system("cls");
-			if(burro == '1')
-			burro = mover_tropas();
-			
-			}
-			
-			
-			system("cls");
-			Printar_mapa();
-			if(burro == '2'){
-				cout<<"\n\n\n\n\t\tSelecione o pais atacante: "; 
-				cin>>burro;
-				atacante = paisesT[(int)(burro - 'A')];
-				cout<<"\n\n\t\tSelecione quem vai receber porrada: ";
-				cin>>burro;
-				defensor = paisesT[(int)(burro - 'A')];
-				//porradaria();
-			}
-			
-		turno++;	
+		if(r == 0){
+		if(turno % 2 ) dono_da_vez = &player2;
+		else dono_da_vez = &player1;
 		}
 		
+		textcolor((*dono_da_vez).cor, 0);
+			distribuir_tropas();
+			
+			system ("cls");
+			
+			
+			/* ataque */
+			do{
+				ataque();
+			}while(user != '.');
+		
+				/* condição de vitória */
+				if((*dono_da_vez).Ndominios == 26) fim = true;
+				if(fim){
+					system("cls");
+					cout<<"\n\n\n\n\n\t\t\t\tParabens "<<(*dono_da_vez).nome <<" voce venceu!!!\n";
+					cout<<"\t\t\t\tVoce esta muito feliz" << endl;
+					break;
+				}
+			
+			/* mover */
+			do{
+				if(!mover_tropas())
+					break;
+			}while(true);
+
+		turno++;	
+		}
+		if(turno % 2 ) dono_da_vez = &player1;
+		else dono_da_vez = &player2;
+		cout<<"\n\n\t\t\t\t"<<(*dono_da_vez).nome <<", a sua incompetencia me supreende, parabens!"<<endl;
+		cout<<"\t\t\t\tVoce esta muito triste\n\n\n\n";
 	return 0;
 }
 
@@ -77,6 +91,29 @@ void Menu(){
 	getch();
 	system("cls");
 	
+	cout<<"\n"<<endl;
+	cout<<"\t\t**Como o jogo funciona?**"<<endl;
+	cout<<"\n";
+	cout<<"*INICIO*\n";
+	cout<<"1- Cada jogador recebera 13 paises aleatoriamente\n"<<endl;
+	cout<<"2- Cada jogador inicialmente tera 6 tropas para distribuir em seus territorios\n"<<endl;
+	cout<<"\t OBS: O numero de tropas e definido a partir do numero de paises que o jogador possui dividido por 2\n caso este numero seja impar o numero de tropas sera aproximado para seu antecessor\n"<<endl;
+	cout<<"3- Ao termino da distribuicao, o jogador poderar remanejar as tropas, apenas para paises\n que lhe pertencem e que possuem fronteira entre si\n"<<endl;
+	cout<<"\t OBS: O jogador pode opitar por nao mover nenhuma tropa.\n"<<endl;
+	cout<<"\t OBS2: O jogador so pode mover tropas no seu turno.\n"<<endl;
+	cout<<"*ATAQUE E DEFESA*"<<endl;
+	cout<<"1- O ataque so pode ser feito por paises com mais de um exercito em seu territorio\n"<<endl;
+	cout<<"2- O jogador so podera realizar o ataque ao pais inimigo que faz fronteira com o de seu dominio.\n"<<endl;
+	cout<<"3- Para vencer o ataque, ao jogar os dados e necessario tirar um numero maior que o da defesa\n"<<endl;
+	cout<<"\t OBS: Em caso de empate, a defesa sempre ira vencer\n"<<endl;
+	cout<<"4- O jogador pode atacar um pais com quantos exercitos desejar, porem so poderar usar no maximo 3 dados\n"<<endl;
+	cout<<"*TURNO*"<<endl;
+	cout<<"Um turno consiste em:\n*Distribuir tropas\n*Ataque(opcional)\n*Remanejar as tropas(opcional)\n\nNESTA ORDEM!\n"<<endl;
+	system("pause");
+	system("cls");
+	
+cout<<"\n\n\n\n"<<endl;
+cout<<"\tOBS: Voce ser o player 1 nao significa que sera o primeiro a jogar!"<<endl;
 	textcolor(player1.cor, 0);
 	cout<<"\n\n\n\n"<<endl;
 	cout<< "\t\t Digite o apelido do Player 1: ";
@@ -88,23 +125,24 @@ void Menu(){
 	textcolor(15, 0);
 	
 }
-/*            Comandos         */
+/*								COMANDOS									  */
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
 #include <time.h>
 #include <windows.h>
-#include "Mapa.cpp"
+#include "mapa.cpp"
 
 using namespace std;
 
-Territorio atacante, defensor;
+Territorio* atacante;
+Territorio* defensor;
 
 void distribuir_paises(int numero_jogadores);
 
 void distribuir_tropas();
 
-char num_exercito (Territorio add);
+void num_exercito (Territorio add);
 
 void textcolor(int color, int background){
 
@@ -161,30 +199,32 @@ void Printar_mapa(){
 
 
 
-char mover_tropas(){
+bool mover_tropas(){
 	int num=0;
 	Territorio* pais_origem;
 	Territorio* pais_destino;
-	
+	/* pais de origem */
 	do{
 			system("cls");
 			Printar_mapa();
-			cout<<"\n\nDigite o pais de origem: ";
-			cin>>burro;
-			pais_origem = &paisesT[(int)(burro - 'A')];
+			cout<<"\n\nDigite a partir de qual pais quer mover tropas ou digite . para concluir sua vez\n";
+			cin>>user;
+			if(user == '.') return false; /* condição para encerrar o movimento */
+			pais_origem = &paisesT[(int)(user - 'A')];
 		if((*pais_origem).player != dono_da_vez){
 			cout<<"Esse pais nao te pertence!\n";
 			system("pause");
 		}
 	
 	}while((*pais_origem).player != dono_da_vez);
-	
-	do{	
+	/* pais destino */
+	do{
 		system("cls");
 		Printar_mapa();
-		cout<<"Digite o pais destino: ";
-		cin>>burro;
-		pais_destino = &paisesT[(int)(burro - 'A')];
+		cout<<"Digite o pais destino ou digite . para concluir sua vez\n";
+		cin>>user;
+		if(user == '.') return false; /* condição para encerrar o movimento */
+		pais_destino = &paisesT[(int)(user - 'A')];
 	if((*pais_destino).player != dono_da_vez){
 		cout<<"Esse pais nao te pertence!\n";
 		system("pause");
@@ -194,36 +234,43 @@ char mover_tropas(){
 	if(!front){
 		cout<<"Estes paises nao possuem fronteiras entre si!\n";
 		system("pause");
-		return '1';
+		return true;
 	}
 	if((*pais_origem).nexercitos == 1 ){
 		cout<<"Voce nao pode mover paises que possuem apenas 1 tropa\n";
 		system("pause");
-		return '1';
+		return true;
 	}
 	
-	cout<<"Digite o numero de tropas a serem movidas: ";
+	do{
+	Printar_mapa();
+	cout<<"Digite o numero de tropas a serem movidas de "<< (char)((*pais_origem).id + 'A')<<" para "<< (char)((*pais_destino).id + 'A')<<"\n";
 	cin>>num;
+	if(num >= (*pais_origem).nexercitos ){
+		system("cls");
+		cout<<"\n\n\n\n\t\t\t\tAo menos 1 tropa deve permanecer no territorio de origem\n\n";
+		system("pause");
+	}
+	}while( num >= (*pais_origem).nexercitos );
 	
 	(*pais_origem).nexercitos -= num;
 	(*pais_destino).nexercitos += num;
 	
-	return '1';
+	return true;
 }
 
 
-char num_exercito (Territorio add){
+void num_exercito (Territorio add){
 	int X=add.x, Y=add.y;
 	char unidade, dezena, centena;
 	unidade = add.nexercitos%10 + 48;
-	dezena = ((add.nexercitos - (unidade - 48))/10)%10 + 48;
-	centena = ((add.nexercitos - (dezena - 48))/10)%10 + 48;
+	dezena = (add.nexercitos/10)%10 + 48;   /* pega a parte inteira da divisão */
+	centena = (add.nexercitos/100)%10 + 48;
 	
 	mapa[X+1][Y+1] = unidade;
 	mapa[X][Y+1] = dezena;
 	mapa[X-1][Y+1] = centena;
 	
-	return '1';
 }
 
 
@@ -237,32 +284,133 @@ void distribuir_tropas(){
 		do{
 			Printar_mapa();
 			cout<<"Digite a que pais quer adicionar tropas\n";
-			cin>>burro;
-			if(paisesT[burro-'A'].player != dono_da_vez){
+			cin>>user;
+			if(paisesT[user-'A'].player != dono_da_vez){
 				cout<<"Este pais nao te pertence\n";
 				system("pause");
 			}
-		}while(paisesT[burro - 'A'].player != dono_da_vez);
+		}while(paisesT[user - 'A'].player != dono_da_vez);
 		
 		/* Receber quantas tropas serão adicionadas */
 		do{
 		Printar_mapa();
-		cout<<"Digite quantas tropas quer adicionar ao pais "<< burro <<endl;
+		cout<<"Digite quantas tropas quer adicionar ao pais "<< user <<endl;
+		cout<<"Lembre-se voce possui "<<total<< " tropas!"<<endl;
 		cin>>nadd;
-		if(nadd > total){
+		if(nadd > total && total > 1){
 			cout<<"Digite um numero menor ou igual a "<<total<<endl;
+			system("pause");
+		}
+		if(nadd > total && total == 1){
+			cout<<"Voce possui apenas uma tropa" <<endl;
 			system("pause");
 		}
 		}while(nadd > total);
 		
 		/* Realizando efetivamente a adição de tropas */
-		paisesT[burro - 'A'].nexercitos += nadd;
+		paisesT[user - 'A'].nexercitos += nadd;
 		total -= nadd;
 	}
 		
 }
 
-/*                                 Mapa                                       */
+bool ataque(){
+	int vitorias = 0, derrotas = 0;
+	textcolor((*dono_da_vez).cor, 0);
+	do{
+	Printar_mapa();
+	cout<<"Escolha o pais atacante ou digite . para encerrar os ataques\n";
+	cin>>user;
+	if(user == '.') return false;
+	atacante = &paisesT[user-'A'];
+	if((*atacante).player != dono_da_vez ){
+		cout<<"Este pais nao te pertence\n";
+		system("pause");
+	}
+	}while( (*atacante).player != dono_da_vez );
+	if((*atacante).nexercitos == 1){
+		cout<<"Paises com apenas 1 tropa nao podem atacar"<<endl;
+		system("pause");
+		return false;
+	}
+	
+	do{
+	Printar_mapa();
+	cout<<"Escolha um pais inimigo para atacar\n";
+	cin>>user;
+	defensor = &paisesT[user-'A'];
+	if( (*defensor).player == dono_da_vez ){
+		cout<<"Este pais te pertence\n";
+		system("pause");
+	}
+	}while( (*defensor).player == dono_da_vez );
+	/* Fronteira */
+	if(!faz_fronteira(atacante, defensor)){
+		cout<<"Os paises nao fazem fronteira"<<endl;
+		system("pause");
+		return false;
+	}
+	
+	/* rolagem de dados */
+	rolar_dados((*atacante).nexercitos - 1, (*defensor).nexercitos);
+	ordenar_dados();  
+	system("cls");
+	cout<<"\t\t\t\tComparando os dados:\n\n\n";
+	for(int i=0; i < 3; i++){
+		cout<<"\t\t\t\t\t";
+		textcolor((*dono_da_vez).cor, 0);
+		if(dado_atk[i] > 0)
+		cout<< dado_atk[i];
+		else cout<< ' ';
+		textcolor(15, 0);
+		cout<< "\t|\t";
+		textcolor( (*(*defensor).player).cor, 0 );
+		if(dado_def[i] > 0)
+		cout<< dado_def[i];
+		else cout<<' ';
+		if(dado_atk[i] != 0 && dado_def[i] != 0){
+		if(dado_atk[i] > dado_def[i])vitorias++;
+		else derrotas++;
+		}
+		cout<<endl;
+}
+	textcolor((*dono_da_vez).cor, 0);
+	cout<<"\nO ataque venceu "<< vitorias <<" vezes\n";
+	(*atacante).nexercitos -= derrotas;
+	(*defensor).nexercitos -= vitorias;
+	system("pause");
+	
+	if((*defensor).nexercitos <= 0){
+		system("cls");
+		cout<<"\n\n\n\n\t\t\t\tPais conquistado. Voce esta feliz!";
+		do{
+		Printar_mapa();
+		cout<<"Digite com quantas tropas quer invadir\n";
+		if((*atacante).nexercitos < 4)
+		cout<<"Lembre que deve ser no maximo "<< (*atacante).nexercitos - 1<<endl;
+		else cout<<"Lembre que deve ser no maximo 3"<<endl;
+		cin>>user_int;
+		if( user_int > 3 || user_int < 1 ){
+			system("cls");
+			cout<<"\n\n\n\n\t\t\t\tValor invalido\n";
+			system("pause");
+		}
+		}while(user_int > 3 || user_int < 1);
+		
+		(*atacante).nexercitos -= user_int;
+		(*defensor).nexercitos += user_int;
+		
+		
+		(*(*defensor).player).Ndominios--;
+		(*dono_da_vez).Ndominios++;
+		(*defensor).player = dono_da_vez;
+	}
+	
+	Printar_mapa();
+	
+	return true;
+}
+/*									MAPA									  */
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
@@ -310,6 +458,9 @@ void criarMapa(){
 
 	/* inicializando os paises */
 	
+	
+	
+	
 	criarTerritorio(3, 1, 'A');
 	paisesT[0].x = 3;
 	paisesT[0].y = 1;
@@ -333,17 +484,18 @@ void criarMapa(){
 	criarTerritorio(12, 7, 'D');
 	paisesT[3].x = 12;
 	paisesT[3].y = 7;
-	paisesT[3].fronteira[0] = &paisesT[(int)('C'-'A')];
-	paisesT[3].fronteira[1] = &paisesT[(int)('E'-'A')];
-	paisesT[3].fronteira[2] = &paisesT[(int)('I'-'A')];
+	paisesT[3].fronteira[0] = &paisesT[(int)('B'-'A')];
+	paisesT[3].fronteira[1] = &paisesT[(int)('C'-'A')];
+	paisesT[3].fronteira[2] = &paisesT[(int)('E'-'A')];
+	paisesT[3].fronteira[3] = &paisesT[(int)('I'-'A')];
 	
 	criarTerritorio(9, 10, 'E');
 	paisesT[4].x = 9;
 	paisesT[4].y = 10;
 	paisesT[4].fronteira[0] = &paisesT[(int)('C'-'A')];
 	paisesT[4].fronteira[1] = &paisesT[(int)('D'-'A')];
-	paisesT[4].fronteira[2] = &paisesT[(int)('G'-'A')];
-	paisesT[4].fronteira[3] = &paisesT[(int)('F'-'A')];
+	paisesT[4].fronteira[2] = &paisesT[(int)('F'-'A')];
+	paisesT[4].fronteira[3] = &paisesT[(int)('G'-'A')];
 	
 	criarTerritorio(14, 13, 'F');
 	paisesT[5].x = 14;
@@ -408,7 +560,7 @@ void criarMapa(){
 	paisesT[14].x = 90;
 	paisesT[14].y = 4;
 	paisesT[14].fronteira[0] = &paisesT[(int)('B'-'A')];
-	paisesT[14].fronteira[1] = &paisesT[(int)('H'-'A')];
+	paisesT[14].fronteira[1] = &paisesT[(int)('R'-'A')];
 	
 	criarTerritorio(85, 9, 'P');
 	paisesT[15].x = 85;
@@ -424,10 +576,11 @@ void criarMapa(){
 	criarTerritorio(90, 12, 'R');
 	paisesT[17].x = 90;
 	paisesT[17].y = 12;
-	paisesT[17].fronteira[0] = &paisesT[(int)('P'-'A')];
-	paisesT[17].fronteira[1] = &paisesT[(int)('Q'-'A')];
-	paisesT[17].fronteira[2] = &paisesT[(int)('T'-'A')];
-	paisesT[17].fronteira[3] = &paisesT[(int)('U'-'A')];
+	paisesT[17].fronteira[0] = &paisesT[(int)('O'-'A')];
+	paisesT[17].fronteira[1] = &paisesT[(int)('P'-'A')];
+	paisesT[17].fronteira[2] = &paisesT[(int)('Q'-'A')];
+	paisesT[17].fronteira[3] = &paisesT[(int)('T'-'A')];
+	paisesT[17].fronteira[4] = &paisesT[(int)('U'-'A')];
 	
 	criarTerritorio(80, 15, 'S');
 	paisesT[18].x = 80;
@@ -479,9 +632,14 @@ void criarMapa(){
 	criarTerritorio(51, 24, 'Z');
 	paisesT[25].x = 51;
 	paisesT[25].y = 24;
-	paisesT[25].fronteira[0] = &paisesT[(int)('Y'-'A')];
-	paisesT[25].fronteira[1] = &paisesT[(int)('W'-'A')];
+	paisesT[25].fronteira[0] = &paisesT[(int)('W'-'A')];
+	paisesT[25].fronteira[1] = &paisesT[(int)('Y'-'A')];
 	
+	
+	/* colocando o id dos paises */
+	
+	for(int i=0; i < 26; i++)
+		paisesT[i].id=i;
 	
 	/* printando as fronteiras marinhas */
 	
@@ -532,7 +690,7 @@ bool faz_fronteira(Territorio* primeiro, Territorio* segundo){
 	return false;
 }
 
-/*                               Auxi                                         */
+/*									AUXI	  								  */
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>
@@ -554,15 +712,16 @@ public:
 class Territorio{
     public:
     jogador* player;
-    int x, y;
-    Territorio* fronteira[4];
+    int x, y, id;
+    Territorio* fronteira[5];
     int nexercitos;
 };
 
 Territorio paisesT[26]; /* declarando os paises */
 jogador player1, player2;
 jogador* dono_da_vez;
-char burro;
+char user;
+int user_int;
 bool fim = false;
 int dado_atk[3];
 int dado_def[3];
@@ -622,4 +781,22 @@ void ordenar_dados(){
 
 int random(int menor, int maior){
 	return rand()%(maior-menor+1)+menor;
+}
+
+
+void rolar_dados(int num_atk, int num_def){
+	if(num_atk > 3)num_atk = 3;
+	if(num_def > 3)num_def = 3;
+	
+	for(int i=0; i<3; i++){
+		dado_atk[i] = 0;
+		dado_def[i] = 0;
+	}
+	for(int i=0; i<num_atk; i++){
+		dado_atk[i] = random(1, 6);
+	}
+	for(int i=0; i<num_def; i++){
+		dado_def[i] = random(1, 6);
+	}
+	
 }

@@ -45,6 +45,9 @@ void criarMapa(){
 
 	/* inicializando os paises */
 	
+	
+	
+	
 	criarTerritorio(3, 1, 'A');
 	paisesT[0].x = 3;
 	paisesT[0].y = 1;
@@ -68,17 +71,18 @@ void criarMapa(){
 	criarTerritorio(12, 7, 'D');
 	paisesT[3].x = 12;
 	paisesT[3].y = 7;
-	paisesT[3].fronteira[0] = &paisesT[(int)('C'-'A')];
-	paisesT[3].fronteira[1] = &paisesT[(int)('E'-'A')];
-	paisesT[3].fronteira[2] = &paisesT[(int)('I'-'A')];
+	paisesT[3].fronteira[0] = &paisesT[(int)('B'-'A')];
+	paisesT[3].fronteira[1] = &paisesT[(int)('C'-'A')];
+	paisesT[3].fronteira[2] = &paisesT[(int)('E'-'A')];
+	paisesT[3].fronteira[3] = &paisesT[(int)('I'-'A')];
 	
 	criarTerritorio(9, 10, 'E');
 	paisesT[4].x = 9;
 	paisesT[4].y = 10;
 	paisesT[4].fronteira[0] = &paisesT[(int)('C'-'A')];
 	paisesT[4].fronteira[1] = &paisesT[(int)('D'-'A')];
-	paisesT[4].fronteira[2] = &paisesT[(int)('G'-'A')];
-	paisesT[4].fronteira[3] = &paisesT[(int)('F'-'A')];
+	paisesT[4].fronteira[2] = &paisesT[(int)('F'-'A')];
+	paisesT[4].fronteira[3] = &paisesT[(int)('G'-'A')];
 	
 	criarTerritorio(14, 13, 'F');
 	paisesT[5].x = 14;
@@ -143,7 +147,7 @@ void criarMapa(){
 	paisesT[14].x = 90;
 	paisesT[14].y = 4;
 	paisesT[14].fronteira[0] = &paisesT[(int)('B'-'A')];
-	paisesT[14].fronteira[1] = &paisesT[(int)('H'-'A')];
+	paisesT[14].fronteira[1] = &paisesT[(int)('R'-'A')];
 	
 	criarTerritorio(85, 9, 'P');
 	paisesT[15].x = 85;
@@ -159,10 +163,11 @@ void criarMapa(){
 	criarTerritorio(90, 12, 'R');
 	paisesT[17].x = 90;
 	paisesT[17].y = 12;
-	paisesT[17].fronteira[0] = &paisesT[(int)('P'-'A')];
-	paisesT[17].fronteira[1] = &paisesT[(int)('Q'-'A')];
-	paisesT[17].fronteira[2] = &paisesT[(int)('T'-'A')];
-	paisesT[17].fronteira[3] = &paisesT[(int)('U'-'A')];
+	paisesT[17].fronteira[0] = &paisesT[(int)('O'-'A')];
+	paisesT[17].fronteira[1] = &paisesT[(int)('P'-'A')];
+	paisesT[17].fronteira[2] = &paisesT[(int)('Q'-'A')];
+	paisesT[17].fronteira[3] = &paisesT[(int)('T'-'A')];
+	paisesT[17].fronteira[4] = &paisesT[(int)('U'-'A')];
 	
 	criarTerritorio(80, 15, 'S');
 	paisesT[18].x = 80;
@@ -214,9 +219,14 @@ void criarMapa(){
 	criarTerritorio(51, 24, 'Z');
 	paisesT[25].x = 51;
 	paisesT[25].y = 24;
-	paisesT[25].fronteira[0] = &paisesT[(int)('Y'-'A')];
-	paisesT[25].fronteira[1] = &paisesT[(int)('W'-'A')];
+	paisesT[25].fronteira[0] = &paisesT[(int)('W'-'A')];
+	paisesT[25].fronteira[1] = &paisesT[(int)('Y'-'A')];
 	
+	
+	/* colocando o id dos paises */
+	
+	for(int i=0; i < 26; i++)
+		paisesT[i].id=i;
 	
 	/* printando as fronteiras marinhas */
 	

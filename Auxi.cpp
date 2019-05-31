@@ -19,8 +19,8 @@ public:
 class Territorio{
     public:
     jogador* player;
-    int x, y;
-    Territorio* fronteira[4];
+    int x, y, id;
+    Territorio* fronteira[5];
     int nexercitos;
 };
 
@@ -92,6 +92,7 @@ int random(int menor, int maior){
 
 
 void rolar_dados(int num_atk, int num_def){
+	if(num_atk > 3)num_atk = 3;
 	if(num_def > 3)num_def = 3;
 	
 	for(int i=0; i<3; i++){
