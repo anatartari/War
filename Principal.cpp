@@ -60,8 +60,8 @@ int main(){
 				if((*dono_da_vez).Ndominios == 26) fim = true;
 				if(fim){
 					system("cls");
-					cout<<"\n\n\n\n\n\t\t\t\tParabens "<<(*dono_da_vez).nome <<" voce venceu!!!\n";
-					cout<<"\t\t\t\tVoce esta muito feliz" << endl;
+					cout<<"\n\n\n\n\n\t\t\t\tParabens "<<(*dono_da_vez).nome <<" voce derrotou o inimigo!!!\n";
+					cout<<"\t\t\t\tVoce venceu a guerra" << endl;
 					break;
 				}
 			
@@ -75,8 +75,8 @@ int main(){
 		}
 		if(turno % 2 ) dono_da_vez = &player1;
 		else dono_da_vez = &player2;
-		cout<<"\n\n\t\t\t\t"<<(*dono_da_vez).nome <<", a sua incompetencia me supreende, parabens!"<<endl;
-		cout<<"\t\t\t\tVoce esta muito triste\n\n\n\n";
+		cout<<"\n\n\t\t\t\t"<<(*dono_da_vez).nome <<", voce foi derrotado!"<<endl;
+		cout<<"\t\t\t\tVoce nao tem mais chances de vencer\n\n\n\n";
 	return 0;
 }
 
@@ -97,7 +97,7 @@ void Menu(){
 	cout<<"1- Cada jogador recebera 13 paises aleatoriamente\n"<<endl;
 	cout<<"2- Cada jogador inicialmente tera 6 tropas para distribuir em seus territorios\n"<<endl;
 	cout<<"\t OBS: O numero de tropas e definido a partir do numero de paises que o jogador possui dividido por 2\n caso este numero seja impar o numero de tropas sera aproximado para seu antecessor\n"<<endl;
-	cout<<"3- Ao termino da distribuicao, o jogador poderar remanejar as tropas, apenas para paises\n que lhe pertencem e que possuem fronteira entre si\n"<<endl;
+	cout<<"3- Ao termino da distribuicao e do ataque, o jogador poderar remanejar as tropas, apenas para paises\n que lhe pertencem e que possuem fronteira entre si\n"<<endl;
 	cout<<"\t OBS: O jogador pode opitar por nao mover nenhuma tropa.\n"<<endl;
 	cout<<"\t OBS2: O jogador so pode mover tropas no seu turno.\n"<<endl;
 	cout<<"*ATAQUE E DEFESA*"<<endl;

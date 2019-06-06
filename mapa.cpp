@@ -18,7 +18,7 @@ void criarTerritorio(int x, int y, char nome){
 		if(j==y+1 && (i==x-1 || i==x || i==x+1))mapa[i][j]='0';
 		else mapa[i][j] = '#';
 	}
-mapa[x+1][y+1] = '1';
+//mapa[x+1][y+1] = '1';
 	mapa[x][y]=nome;
 }
 
@@ -166,32 +166,32 @@ void criarMapa(){
 	paisesT[17].fronteira[0] = &paisesT[(int)('O'-'A')];
 	paisesT[17].fronteira[1] = &paisesT[(int)('P'-'A')];
 	paisesT[17].fronteira[2] = &paisesT[(int)('Q'-'A')];
-	paisesT[17].fronteira[3] = &paisesT[(int)('T'-'A')];
-	paisesT[17].fronteira[4] = &paisesT[(int)('U'-'A')];
+	paisesT[17].fronteira[3] = &paisesT[(int)('U'-'A')];
+	//paisesT[17].fronteira[4] = &paisesT[(int)('T'-'A')];
 	
-	criarTerritorio(80, 15, 'S');
-	paisesT[18].x = 80;
+	criarTerritorio(79, 15, 'S');
+	paisesT[18].x = 79;
 	paisesT[18].y = 15;
 	paisesT[18].fronteira[0] = &paisesT[(int)('T'-'A')];
 	
-	criarTerritorio(85, 15, 'T');
-	paisesT[19].x = 85;
+	criarTerritorio(84, 15, 'T');
+	paisesT[19].x = 84;
 	paisesT[19].y = 15;
-	paisesT[19].fronteira[0] = &paisesT[(int)('R'-'A')];
+	//paisesT[19].fronteira[0] = &paisesT[(int)('R'-'A')];
 	paisesT[19].fronteira[1] = &paisesT[(int)('S'-'A')];
 	paisesT[19].fronteira[2] = &paisesT[(int)('U'-'A')];
 	paisesT[19].fronteira[3] = &paisesT[(int)('W'-'A')];
 	
-	criarTerritorio(90, 15, 'U');
-	paisesT[20].x = 90;
+	criarTerritorio(89, 15, 'U');
+	paisesT[20].x = 89;
 	paisesT[20].y = 15;
 	paisesT[20].fronteira[0] = &paisesT[(int)('R'-'A')];
 	paisesT[20].fronteira[1] = &paisesT[(int)('T'-'A')];
 	paisesT[20].fronteira[2] = &paisesT[(int)('V'-'A')];
 	paisesT[20].fronteira[3] = &paisesT[(int)('W'-'A')];
 	
-	criarTerritorio(95, 16, 'V');
-	paisesT[21].x = 95;
+	criarTerritorio(94, 16, 'V');
+	paisesT[21].x = 94;
 	paisesT[21].y = 16;
 	paisesT[21].fronteira[0] = &paisesT[(int)('U'-'A')];
 	paisesT[21].fronteira[1] = &paisesT[(int)('H'-'A')];
@@ -240,7 +240,7 @@ void criarMapa(){
 	for(int i =53 ; i < 83 ; i++)
 		mapa[i][10]='+';	
 	
-	for(int i =98 ; i < 105 ; i++)
+	for(int i =97 ; i < 105 ; i++)
 		mapa[i][17]='+';
 	for(int i =0 ; i < 7 ; i++)
 		mapa[i][17]='+';

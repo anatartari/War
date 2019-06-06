@@ -20,7 +20,7 @@ class Territorio{
     public:
     jogador* player;
     int x, y, id;
-    Territorio* fronteira[5];
+    Territorio* fronteira[8];
     int nexercitos;
 };
 
