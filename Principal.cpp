@@ -67,7 +67,10 @@ int main(){
 			
 			/* mover */
 			do{
-				if(!mover_tropas())
+			for(int i=0; i < 26; i++)
+			paisesTaux[i] = paisesT[i]; /* igualando a variavel auxiliar com o vetor dos paises */
+			
+			if(!mover_tropas())
 					break;
 			}while(true);
 

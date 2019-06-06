@@ -25,6 +25,8 @@ class Territorio{
 };
 
 Territorio paisesT[26]; /* declarando os paises */
+Territorio paisesTaux[26]; /* variavel auxiliar para regra de remanejamento */
+
 jogador player1, player2;
 jogador* dono_da_vez;
 char user;

@@ -73,6 +73,7 @@ void Printar_mapa(){
 
 bool mover_tropas(){
 	int num=0;
+	
 	Territorio* pais_origem;
 	Territorio* pais_destino;
 	/* pais de origem */
@@ -96,7 +97,7 @@ bool mover_tropas(){
 		cout<<"Digite o pais destino ou digite . para concluir sua vez\n";
 		cin>>user;
 		if(user == '.') return false; /* condição para encerrar o movimento */
-		pais_destino = &paisesT[(int)(user - 'A')];
+		pais_destino = &paisesTaux[(int)(user - 'A')];
 	if((*pais_destino).player != dono_da_vez){
 		cout<<"Esse pais nao te pertence!\n";
 		system("pause");
@@ -118,15 +119,16 @@ bool mover_tropas(){
 	Printar_mapa();
 	cout<<"Digite o numero de tropas a serem movidas de "<< (char)((*pais_origem).id + 'A')<<" para "<< (char)((*pais_destino).id + 'A')<<"\n";
 	cin>>num;
-	if(num >= (*pais_origem).nexercitos ){
+	if(num >= paisesTaux[(*pais_origem).id].nexercitos ){
 		system("cls");
 		cout<<"\n\n\n\n\t\t\t\tAo menos 1 tropa deve permanecer no territorio de origem\n\n";
 		system("pause");
 	}
-	}while( num >= (*pais_origem).nexercitos );
+	}while( num >= paisesTaux[(*pais_origem).id].nexercitos );
 	
 	(*pais_origem).nexercitos -= num;
 	(*pais_destino).nexercitos += num;
+	
 	
 	return true;
 }
@@ -262,7 +264,7 @@ bool ataque(){
 		cout<<"Lembre que deve ser no maximo "<< (*atacante).nexercitos - 1<<endl;
 		else cout<<"Lembre que deve ser no maximo 3"<<endl;
 		cin>>user_int;
-		if( user_int > 3 || user_int < 1 ){
+		if( user_int > 3 || user_int < 1 || user_int > (*atacante).nexercitos - 1){
 			system("cls");
 			cout<<"\n\n\n\n\t\t\t\tValor invalido\n";
 			system("pause");
