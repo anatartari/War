@@ -273,7 +273,7 @@ void criarMapa(){
 
 bool faz_fronteira(Territorio* primeiro, Territorio* segundo){
 	for(int i = 0; i < 4; i++)
-		if((*primeiro).fronteira[i] == segundo) return true;
+		if(primeiro->fronteira[i] == segundo) return true;
 	return false;
 }
 

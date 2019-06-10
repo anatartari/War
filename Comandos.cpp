@@ -48,6 +48,24 @@ void distribuir_paises(){
 	}
 }
 
+void distribuir_paises2(){
+	int aux;
+	for(int i=0; i<26 ;){
+		aux=random(0, 1);
+		if(aux == 0 && player1.Ndominios < 1){
+			paisesT[i].player = &player1;
+			player1.dominio[player1.Ndominios] = i;
+			player1.Ndominios++;	
+			i++;
+		}else if(aux == 1 && player2.Ndominios < 25){
+			paisesT[i].player = &player2;
+			player2.dominio[player2.Ndominios] = i;
+			player2.Ndominios++;	
+			i++;
+		}
+	}
+}
+
 void Printar_mapa(){
 	system("cls");
 	for(int j=0; j<alt; j++){
@@ -97,31 +115,32 @@ bool mover_tropas(){
 		cout<<"Digite o pais destino ou digite . para concluir sua vez\n";
 		cin>>user;
 		if(user == '.') return false; /* condição para encerrar o movimento */
-		pais_destino = &paisesTaux[(int)(user - 'A')];
+		pais_destino = &paisesT[(int)(user - 'A')];
 	if((*pais_destino).player != dono_da_vez){
 		cout<<"Esse pais nao te pertence!\n";
 		system("pause");
 	}
 	}while((*pais_destino).player != dono_da_vez);
+	/* TESTANDO FRONTEIRA */
 	bool front = faz_fronteira(pais_origem, pais_destino);
 	if(!front){
 		cout<<"Estes paises nao possuem fronteiras entre si!\n";
 		system("pause");
 		return true;
 	}
-	if((*pais_origem).nexercitos == 1 ){
-		cout<<"Voce nao pode mover paises que possuem apenas 1 tropa\n";
+	if( paisesTaux[(*pais_origem).id].nexercitos == 1 ){
+		cout<<"Voce nao pode mover tropas de paises que possuem apenas 1 tropa no inicio do turno\n";
 		system("pause");
 		return true;
 	}
 	
 	do{
 	Printar_mapa();
-	cout<<"Digite o numero de tropas a serem movidas de "<< (char)((*pais_origem).id + 'A')<<" para "<< (char)((*pais_destino).id + 'A')<<"\n";
+	cout<<"Digite o numero de tropas a serem movidas de "<< (char)((*pais_origem).id + 'A')<<" para "<< (char)((*pais_destino).id + 'A');
+	cout<<" (no maximo " << paisesTaux[(*pais_origem).id].nexercitos << ")\n";
 	cin>>num;
 	if(num >= paisesTaux[(*pais_origem).id].nexercitos ){
-		system("cls");
-		cout<<"\n\n\n\n\t\t\t\tAo menos 1 tropa deve permanecer no territorio de origem\n\n";
+		cout<<"\nNumero de tropas invalido\n\n";
 		system("pause");
 	}
 	}while( num >= paisesTaux[(*pais_origem).id].nexercitos );
