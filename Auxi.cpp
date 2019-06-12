@@ -6,16 +6,15 @@
 using namespace std;
 
 class Territorio;
-
+//Dados do Jogador
 class jogador{
 public:
-	int dominio[27];
 	int id;
 	char nome[20];
 	int Ndominios;
 	int cor;
 };
-
+//Dados do territorio
 class Territorio{
     public:
     jogador* player;
@@ -37,10 +36,10 @@ int dado_def[3];
 
 void ordenar_dados();
 int random(int menor, int maior);
-void roll_atk(int n);
 
 int turno=1;
 
+//Ordem decrescente.
 void ordenar_dados(){
 	int aux[3]={0,0,0}, p[3]={0,0,0};
 	/* ordenando os dados de ataque */
@@ -59,6 +58,8 @@ void ordenar_dados(){
 	for(int i=0; i<3; i++)
 	if(i != p[0] && i != p[1]) aux[2] = dado_atk[i]; // guarda o menor em aux
 	
+		
+//Guarda em ordem		
 	for(int i=0; i<3; i++){
 		dado_atk[i] = aux[i];
 		aux[i] = 0;
@@ -80,6 +81,8 @@ void ordenar_dados(){
 	for(int i=0; i<3; i++)
 	if(i != p[0] && i != p[1]) aux[2] = dado_def[i]; // guarda o menor em aux
 	
+
+//Guarda em ordem
 	for(int i=0; i<3; i++){
 		dado_def[i] = aux[i];
 		aux[i] = 0;

@@ -15,15 +15,17 @@ int main(){
 	player1.cor = 11;
 	player2.cor = 12;
 	criarMapa();
-	for(int i=0; i<27; i++){
-		player1.dominio[i] = -1;
-		player2.dominio[i] = -1;
-}
+
 	srand((unsigned)time(0));
 	Menu();
+	
 		distribuir_paises();
-		//distribuir_paises2();// modo de teste
-		int r = random(0, 1); /* r serve para escolher a ordem */
+		
+		// modo de teste
+		//distribuir_paises2();
+		
+		/* r serve para escolher a ordem */
+		int r = random(0, 1); 
 		if(r == 1){
 		dono_da_vez = &player1;
 		distribuir_tropas();

@@ -18,28 +18,28 @@ void num_exercito (Territorio add);
 
 void textcolor(int color, int background){
 
-    HANDLE h = GetStdHandle ( STD_OUTPUT_HANDLE );
+   /* HANDLE h = GetStdHandle ( STD_OUTPUT_HANDLE );
     CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
 
 
-    GetConsoleScreenBufferInfo(h, &csbiInfo);
+    GetConsoleScreenBufferInfo(h, &csbiInfo);*/
 
     SetConsoleTextAttribute (GetStdHandle (STD_OUTPUT_HANDLE),color  + 16* background );
 }
 
 
 
-
+//Jogo normal
 void distribuir_paises(){
 	int aux;
 	for(int i=0; i<26 ;){
-		aux=random(0, 1);
-		if(aux == 0 && player1.Ndominios < 13){
+		aux=random(1, 2);
+		if(aux == 1 && player1.Ndominios < 13){
 			paisesT[i].player = &player1;
 			player1.dominio[player1.Ndominios] = i;
 			player1.Ndominios++;	
 			i++;
-		}else if(aux == 1 && player2.Ndominios < 13){
+		}else if(aux == 2 && player2.Ndominios < 13){
 			paisesT[i].player = &player2;
 			player2.dominio[player2.Ndominios] = i;
 			player2.Ndominios++;	
@@ -47,7 +47,7 @@ void distribuir_paises(){
 		}
 	}
 }
-
+//Modo de teste
 void distribuir_paises2(){
 	int aux;
 	for(int i=0; i<26 ;){
@@ -70,10 +70,11 @@ void Printar_mapa(){
 	system("cls");
 	for(int j=0; j<alt; j++){
 	for(int i=0; i<larg; i++){
+		//Deixa Branco
 		if(mapa[i][j] == ' ' || mapa[i][j] == '+')
 			textcolor(15, 0);
 		else if(mapa[i][j] == '#' || mapa[i][j] < 'A') textcolor(15, 0);
-		
+		//Deixar colorido
 		else{
 		 textcolor((*paisesT[mapa[i][j] - 'A' ].player).cor, 0);
 		num_exercito (paisesT[mapa[i][j] - 'A' ]);
@@ -114,13 +115,16 @@ bool mover_tropas(){
 		Printar_mapa();
 		cout<<"Digite o pais destino ou digite . para concluir sua vez\n";
 		cin>>user;
-		if(user == '.') return false; /* condição para encerrar o movimento */
+		
+		/* condição para encerrar o movimento */
+		if(user == '.') return false; 
 		pais_destino = &paisesT[(int)(user - 'A')];
 	if((*pais_destino).player != dono_da_vez){
 		cout<<"Esse pais nao te pertence!\n";
 		system("pause");
 	}
 	}while((*pais_destino).player != dono_da_vez);
+	
 	/* TESTANDO FRONTEIRA */
 	bool front = faz_fronteira(pais_origem, pais_destino);
 	if(!front){
@@ -152,12 +156,12 @@ bool mover_tropas(){
 	return true;
 }
 
-
+//Atualiza o Nº de exercito no mapa
 void num_exercito (Territorio add){
 	int X=add.x, Y=add.y;
 	char unidade, dezena, centena;
 	unidade = add.nexercitos%10 + 48;
-	dezena = (add.nexercitos/10)%10 + 48;   /* pega a parte inteira da divisão */
+	dezena = (add.nexercitos/10)%10 + 48;   /* pega a parte inteira da divisão (Notas e moedas)(ASCII) */
 	centena = (add.nexercitos/100)%10 + 48;
 	
 	mapa[X+1][Y+1] = unidade;
@@ -169,11 +173,12 @@ void num_exercito (Territorio add){
 
 void distribuir_tropas(){
 	int total = (*dono_da_vez).Ndominios/2;
-	if(total == 0)total++;
+	if(total < 3)total = 3;
 	
 	while(total > 0){
-		int nadd;
-		/* Receber o pais que vai receber as tropas */
+		int nadd; //Numero de tropas que o usuario quer/vai colocar.
+		
+		/* Ler o pais que vai receber as tropas */
 		do{
 			Printar_mapa();
 			cout<<"Digite a que pais quer adicionar tropas\n";
@@ -184,7 +189,7 @@ void distribuir_tropas(){
 			}
 		}while(paisesT[user - 'A'].player != dono_da_vez);
 		
-		/* Receber quantas tropas serão adicionadas */
+		/* Ler quantas tropas serão adicionadas */
 		do{
 		Printar_mapa();
 		cout<<"Digite quantas tropas quer adicionar ao pais "<< user <<endl;
@@ -195,7 +200,7 @@ void distribuir_tropas(){
 			system("pause");
 		}
 		if(nadd > total && total == 1){
-			cout<<"Voce possui apenas uma tropa" <<endl;
+			cout<<"Voce possui apenas uma tropa para distribuir" <<endl;
 			system("pause");
 		}
 		}while(nadd > total);
@@ -210,33 +215,48 @@ void distribuir_tropas(){
 bool ataque(){
 	int vitorias = 0, derrotas = 0;
 	textcolor((*dono_da_vez).cor, 0);
+	
+	//Escolha do pais atacante
 	do{
 	Printar_mapa();
 	cout<<"Escolha o pais atacante ou digite . para encerrar os ataques\n";
 	cin>>user;
+	//Verifica se o jogador não quer mais atacar
 	if(user == '.') return false;
+	
 	atacante = &paisesT[user-'A'];
+
+	//Verificação do proprietario
 	if((*atacante).player != dono_da_vez ){
 		cout<<"Este pais nao te pertence\n";
 		system("pause");
 	}
 	}while( (*atacante).player != dono_da_vez );
+	
+	//Verifica se o pais tem mais de 1 tropa
 	if((*atacante).nexercitos == 1){
 		cout<<"Paises com apenas 1 tropa nao podem atacar"<<endl;
 		system("pause");
 		return false;
 	}
 	
+	//Escolhe o pais que sera atacado
 	do{
 	Printar_mapa();
-	cout<<"Escolha um pais inimigo para atacar\n";
+	cout<<"Escolha um pais inimigo para atacar ou digite . para encerrar os ataques\n";
 	cin>>user;
+	//Verifica se o jogador não quer mais atacar
+	if(user == '.') return false;
+	
 	defensor = &paisesT[user-'A'];
+
+	//Verifica se o pais pertence ao jogador
 	if( (*defensor).player == dono_da_vez ){
 		cout<<"Este pais te pertence\n";
 		system("pause");
 	}
 	}while( (*defensor).player == dono_da_vez );
+	
 	/* Fronteira */
 	if(!faz_fronteira(atacante, defensor)){
 		cout<<"Os paises nao fazem fronteira"<<endl;
@@ -247,6 +267,7 @@ bool ataque(){
 	/* rolagem de dados */
 	rolar_dados((*atacante).nexercitos - 1, (*defensor).nexercitos);
 	ordenar_dados();  
+	
 	system("cls");
 	cout<<"\t\t\t\tComparando os dados:\n\n\n";
 	for(int i=0; i < 3; i++){
@@ -257,10 +278,14 @@ bool ataque(){
 		else cout<< ' ';
 		textcolor(15, 0);
 		cout<< "\t|\t";
+		
+		//pro dado ficar da cor certa
 		textcolor( (*(*defensor).player).cor, 0 );
 		if(dado_def[i] > 0)
 		cout<< dado_def[i];
 		else cout<<' ';
+		
+		//Conta as vitorias e derrotas
 		if(dado_atk[i] != 0 && dado_def[i] != 0){
 		if(dado_atk[i] > dado_def[i])vitorias++;
 		else derrotas++;
@@ -268,32 +293,36 @@ bool ataque(){
 		cout<<endl;
 }
 	textcolor((*dono_da_vez).cor, 0);
-	cout<<"\nO ataque venceu "<< vitorias <<" vezes\n";
+	cout<<"\nO ataque venceu "<< vitorias <<" vezes\n"<<endl;
+	cout<<"\nO atacante perdeu "<<derrotas <<" tropas"<<endl;
+	cout<<"\nO defensor perdeu "<<vitorias <<" tropas"<<endl;
 	(*atacante).nexercitos -= derrotas;
 	(*defensor).nexercitos -= vitorias;
 	system("pause");
 	
 	if((*defensor).nexercitos <= 0){
 		system("cls");
-		cout<<"\n\n\n\n\t\t\t\tPais conquistado. Voce esta feliz!";
+		cout<<"\n\n\n\n\t\t\t\tPais conquistado. "<<(*dono_da_vez).nome<<" esta feliz!";
 		do{
 		Printar_mapa();
+		//Colocar tropas no territorio conquistado
 		cout<<"Digite com quantas tropas quer invadir\n";
 		if((*atacante).nexercitos < 4)
-		cout<<"Lembre que deve ser no maximo "<< (*atacante).nexercitos - 1<<endl;
+		cout<<"Lembre que devem ser no maximo "<< (*atacante).nexercitos - 1<<endl;
 		else cout<<"Lembre que deve ser no maximo 3"<<endl;
 		cin>>user_int;
+	
 		if( user_int > 3 || user_int < 1 || user_int > (*atacante).nexercitos - 1){
 			system("cls");
 			cout<<"\n\n\n\n\t\t\t\tValor invalido\n";
 			system("pause");
 		}
 		}while(user_int > 3 || user_int < 1);
-		
+		//Tira do territorio e coloca no outro
 		(*atacante).nexercitos -= user_int;
 		(*defensor).nexercitos += user_int;
 		
-		
+		//Atualiza a variavel de numeros de territorios
 		(*(*defensor).player).Ndominios--;
 		(*dono_da_vez).Ndominios++;
 		(*defensor).player = dono_da_vez;

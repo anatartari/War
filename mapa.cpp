@@ -15,17 +15,16 @@ void inicializarMapa();
 void criarTerritorio(int x, int y, char nome){
 	for(int i=x-2; i<x+3; i++)
 	for(int j=y; j<y+3; j++){
-		if(j==y+1 && (i==x-1 || i==x || i==x+1))mapa[i][j]='0';
-		else mapa[i][j] = '#';
+   	   	  mapa[i][j] = '#';
 	}
-//mapa[x+1][y+1] = '1';
+
 	mapa[x][y]=nome;
 }
 
 void criarMapa();
 
 
-
+//Preenche com ' '.
 void inicializarMapa(){
 player1.Ndominios = 0;
 player2.Ndominios = 0;
@@ -46,7 +45,7 @@ void criarMapa(){
 	/* inicializando os paises */
 	
 	
-	
+	//Trabalho das damas.
 	
 	criarTerritorio(3, 1, 'A');
 	paisesT[0].x = 3;
@@ -228,8 +227,8 @@ void criarMapa(){
 	for(int i=0; i < 26; i++)
 		paisesT[i].id=i;
 	
-	/* printando as fronteiras marinhas */
 	
+	/* printando as fronteiras marinhas */
 	
 	for(int i =53 ; i < 83 ; i++)
 		mapa[i][10]='+';
